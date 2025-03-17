@@ -14,7 +14,7 @@
 ### 1. Clone the repository
 ```sh
 git clone https://github.com/mahmoud-s-Khedr/DBAutomator.git
-cd DBAutomator
+cd DBAutomator/src
 ```
 
 ### 2. Install Dependencies
