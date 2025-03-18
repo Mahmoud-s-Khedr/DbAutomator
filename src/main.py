@@ -6,12 +6,14 @@ import datetime
 import logging
 import argparse
 from pathlib import Path
-    
+from dotenv import load_dotenv
 
 # Configuration
-DB_PATH = Path('/path/to/your/database.db')# Path to your SQLite database
-BACKUP_DIR = Path('/var/backups')
-LOG_FILE = Path('/var/log/DBAutomator.log')
+load_dotenv('/etc/dbautomator/.env')
+DB_PATH = Path(os.getenv('DB_PATH')) if os.getenv('DB_PATH') else None
+BACKUP_DIR = Path(os.getenv('BACKUP_DIR'))
+LOG_FILE = Path(os.getenv('LOG_FILE'))
+
 
 def initialize():
     if not BACKUP_DIR.exists():

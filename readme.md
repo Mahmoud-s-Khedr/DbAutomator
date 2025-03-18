@@ -21,11 +21,11 @@ cd DBAutomator/src
 DBAutomator runs on **Python 3** and requires no external dependencies.
 
 ### 3. Configure Paths
-Modify the following paths in `DBAutomator.py` to match your setup:
-```python
-DB_PATH = Path('/path/to/your/database.db')  # SQLite database file
-BACKUP_DIR = Path('/var/backups')  # Backup directory
-LOG_FILE = Path('/var/log/DBAutomator.log')  # Log file
+in Directory `/etc/dbautomator` create a file named `.env` and add the following:
+```sh
+DB_PATH=/path/to/your/database.db  # optional
+BACKUP_DIR=/var/backups
+LOG_FILE=/var/log/DBAutomator.log
 ```
 
 ## Usage
