@@ -29,16 +29,16 @@ logging.basicConfig(
 )
     
 
-def backup_database():
+def backup_database(db_path=DB_PATH):
     try:
-        if not DB_PATH.exists():
-            raise FileNotFoundError(f"Database file not found: {DB_PATH}")
+        if not db_path.exists():
+            raise FileNotFoundError(f"Database file not found: {db_path}")
             
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         backup_file = f"backup_{timestamp}.db"
         backup_path = BACKUP_DIR / backup_file
         
-        shutil.copy2(DB_PATH, backup_path)
+        shutil.copy2(db_path, backup_path)
         logging.info(f"Backup created successfully: {backup_file}")
     
         return True
@@ -46,17 +46,17 @@ def backup_database():
         logging.error(f"Backup failed: {str(e)}")
         return False
 
-def restore_database(backup_file):
+def restore_database(backup_path, restore_path=DB_PATH):
     try:
-        backup_path = BACKUP_DIR / backup_file
-        
+        if restore_path is None:
+            restore_path = Path.cwd() / backup_path.name
 
-        if DB_PATH.exists():
+        if restore_path.exists():
             logging.warning("Overwriting existing database")
         
-        shutil.copy2(backup_path, DB_PATH)
+        shutil.copy2(backup_path, restore_path)
             
-        logging.info(f"Database restored successfully from: {backup_file}")
+        logging.info(f"Database restored successfully from: {backup_path}")
         return True
     except Exception as e:
         logging.error(f"Restore failed: {str(e)}")
@@ -68,6 +68,9 @@ def list_backup_files():
     for i, f in enumerate(backup_files, 1):
         print(f"{i}. {f}")
 
+def usage():
+    print("./main.py [--backup | --restore] [--file <backup_file>]")
+
 if __name__ == "__main__":
     initialize()
     
@@ -75,17 +78,31 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--backup", action="store_true", help="Create a backup")
     parser.add_argument("--restore", action="store_true", help="Restore a backup file")
+    parser.add_argument("--db_file", help="Specify the backup file to restore")
     args = parser.parse_args()
     
     if args.backup:
-        backup_database()
+        if args.db_file:
+            backup_file = Path(args.db_file)
+            backup_database(backup_file)
+        else:
+            backup_database()
+
     elif args.restore:
         list_backup_files()
         backup_file = input("Enter the backup file name: ")
-        if restore_database(backup_file):
+        backup_path = BACKUP_DIR / backup_file
+
+        if args.db_file:
+            restore_file = Path(args.db_file)
+            if not restore_file.is_absolute():
+                restore_path = Path.cwd() / restore_file
+        else:
+            restore_path = DB_PATH
+
+        if restore_database(backup_path, restore_path):
             print("Database restored successfully")
         else:
             print("Database restore failed")
     else:
-        print("Please specify either --backup or --restore")
-    
+        usage()

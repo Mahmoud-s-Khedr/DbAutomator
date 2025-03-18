@@ -31,6 +31,11 @@ LOG_FILE = Path('/var/log/DBAutomator.log')  # Log file
 ## Usage
 
 ### **Manually Backup the Database**
+Usage:
+```
+main.py [--backup | --restore] [--file <backup_file>]
+```
+
 ```sh
 python DBAutomator.py --backup
 ```
