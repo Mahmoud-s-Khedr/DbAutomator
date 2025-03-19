@@ -21,7 +21,7 @@ cd DBAutomator/src
 DBAutomator runs on **Python 3** and requires no external dependencies.
 
 ### 3. Configure Paths
-Modify the following paths in `DBAutomator.py` to match your setup:
+Modify the following paths in `main.py` to match your setup:
 ```python
 DB_PATH = Path('/path/to/your/database.db')  # SQLite database file
 BACKUP_DIR = Path('/var/backups')  # Backup directory
@@ -32,24 +32,24 @@ LOG_FILE = Path('/var/log/DBAutomator.log')  # Log file
 
 ### **Manually Backup the Database**
 ```sh
-python DBAutomator.py --backup
+python main.py --backup
 ```
 Creates a timestamped backup in `/var/backups/`.
 
 ### **Restore a Database**
 ```sh
-python DBAutomator.py --restore
+python main.py --restore
 ```
 Lists all available backups and prompts you to select one.
 
 ### **Example Run**
 ```sh
-python DBAutomator.py --backup
+python main.py --backup
 # Backup created successfully: backup_2025-03-18_14-30-00.db
 ```
 
 ```sh
-python DBAutomator.py --restore
+python main.py --restore
 # Available backup files:
 # 1. backup_2025-03-18_14-30-00.db
 # Enter the backup file name: backup_2025-03-18_14-30-00.db
@@ -68,16 +68,16 @@ crontab -e
 ### **2. Add a Cron Job**
 To schedule a backup **every day at 2 AM**, add this line:
 ```sh
-0 2 * * * /usr/bin/python3 /path/to/DBAutomator.py --backup
+0 2 * * * /usr/bin/python3 /path/to/main.py --backup
 ```
 🔹 **Explanation of Cron Format:**  
 ```
 Minute  Hour  Day  Month  DayOfWeek  Command
-0       2     *    *      *         /usr/bin/python3 /path/to/DBAutomator.py --backup
+0       2     *    *      *         /usr/bin/python3 /path/to/main.py --backup
 ```
 - `0 2 * * *` → Runs at **2:00 AM** every day.
 - `/usr/bin/python3` → Full path to Python 3.
-- `/path/to/DBAutomator.py` → Replace with the actual path to your script.
+- `/path/to/main.py` → Replace with the actual path to your script.
 
 ### **3. Verify Cron Job**
 To check if your cron job is added, run:
@@ -93,7 +93,7 @@ cat /var/log/DBAutomator.log
 
 ### **Example: Running Backups Every 6 Hours**
 ```sh
-0 */6 * * * /usr/bin/python3 /path/to/DBAutomator.py --backup
+0 */6 * * * /usr/bin/python3 /path/to/main.py --backup
 ```
 This will execute the backup **every 6 hours**.
 
