@@ -18,7 +18,11 @@ cd DBAutomator/src
 ```
 
 ### 2. Install Dependencies
-DBAutomator runs on **Python 3** and requires no external dependencies.
+DBAutomator runs on **Python 3** and
+requires the following packages:
+```sh
+pip install python-dotenv
+```
 
 ### 3. Configure Paths
 in Directory `/etc/dbautomator` create a file named `.env` and add the following:
